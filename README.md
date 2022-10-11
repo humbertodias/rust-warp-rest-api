@@ -4,6 +4,12 @@ Code for the LogRocket [article](https://blog.logrocket.com/creating-a-rest-api-
 
 # Summarize
 
+[Rust](https://www.rust-lang.org/tools/install) install
+```sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Run
 ```sh
 cargo run
 ```
