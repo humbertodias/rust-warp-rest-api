@@ -19,7 +19,7 @@ struct Item {
 
 #[derive(Clone)]
 struct Store {
-    grocery_list: Arc<RwLock<Items>>
+    grocery_list: Arc<RwLock<Items>>,
 }
 
 impl Store {
@@ -32,7 +32,7 @@ impl Store {
 
 async fn update_grocery_list(
     item: Item,
-    store: Store
+    store: Store,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     store.grocery_list.write().insert(item.name, item.quantity);
 
@@ -44,7 +44,7 @@ async fn update_grocery_list(
 
 async fn delete_grocery_list_item(
     id: Id,
-    store: Store
+    store: Store,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     store.grocery_list.write().remove(&id.name);
 
@@ -60,7 +60,7 @@ async fn get_grocery_list(
     let mut result = HashMap::new();
     let r = store.grocery_list.read();
 
-    for (key,value) in r.iter() {
+    for (key, value) in r.iter() {
         result.insert(key, value);
     }
 
@@ -69,14 +69,13 @@ async fn get_grocery_list(
     ))
 }
 
-fn delete_json() -> impl Filter<Extract = (Id,), Error = warp::Rejection> + Clone {
+fn delete_json() -> impl Filter<Extract=(Id, ), Error=warp::Rejection> + Clone {
     // When accepting a body, we want a JSON body
     // (and to reject huge payloads)...
     warp::body::content_length_limit(1024 * 16).and(warp::body::json())
 }
 
-
-fn post_json() -> impl Filter<Extract = (Item,), Error = warp::Rejection> + Clone {
+fn post_json() -> impl Filter<Extract=(Item, ), Error=warp::Rejection> + Clone {
     // When accepting a body, we want a JSON body
     // (and to reject huge payloads)...
     warp::body::content_length_limit(1024 * 16).and(warp::body::json())
@@ -117,7 +116,6 @@ async fn main() {
         .and(post_json())
         .and(store_filter.clone())
         .and_then(update_grocery_list);
-
 
     let routes = add_items.or(get_items).or(delete_item).or(update_item);
 

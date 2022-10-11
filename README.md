@@ -46,3 +46,25 @@ curl --location --request DELETE 'localhost:3030/v1/groceries' \
 "name": "apple"
 }'
 ```
+
+## Docker
+
+Build
+```sh
+docker build . -t rest-api
+```
+
+Run
+```sh
+docker run -p 3030:3030 rest-api
+```
+
+Image
+```
+docker images
+```
+
+```
+REPOSITORY               TAG                                     IMAGE ID       CREATED         SIZE
+rest-api                 latest                                  cdf155a5d3b6   2 minutes ago   13MB
+```
