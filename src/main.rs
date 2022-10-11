@@ -19,7 +19,7 @@ struct Item {
 
 #[derive(Clone)]
 struct Store {
-  grocery_list: Arc<RwLock<Items>>
+    grocery_list: Arc<RwLock<Items>>
 }
 
 impl Store {
@@ -33,40 +33,40 @@ impl Store {
 async fn update_grocery_list(
     item: Item,
     store: Store
-    ) -> Result<impl warp::Reply, warp::Rejection> {
-        store.grocery_list.write().insert(item.name, item.quantity);
-    
-        Ok(warp::reply::with_status(
-            "Added items to the grocery list",
-            http::StatusCode::CREATED,
-        ))
+) -> Result<impl warp::Reply, warp::Rejection> {
+    store.grocery_list.write().insert(item.name, item.quantity);
+
+    Ok(warp::reply::with_status(
+        "Added items to the grocery list",
+        http::StatusCode::CREATED,
+    ))
 }
 
 async fn delete_grocery_list_item(
     id: Id,
     store: Store
-    ) -> Result<impl warp::Reply, warp::Rejection> {
-        store.grocery_list.write().remove(&id.name);
-    
-        Ok(warp::reply::with_status(
-            "Removed item from grocery list",
-            http::StatusCode::OK,
-        ))
+) -> Result<impl warp::Reply, warp::Rejection> {
+    store.grocery_list.write().remove(&id.name);
+
+    Ok(warp::reply::with_status(
+        "Removed item from grocery list",
+        http::StatusCode::OK,
+    ))
 }
 
 async fn get_grocery_list(
     store: Store
-    ) -> Result<impl warp::Reply, warp::Rejection> {
-        let mut result = HashMap::new();
-        let r = store.grocery_list.read();
-    
-        for (key,value) in r.iter() {
-            result.insert(key, value);
-        }
+) -> Result<impl warp::Reply, warp::Rejection> {
+    let mut result = HashMap::new();
+    let r = store.grocery_list.read();
 
-        Ok(warp::reply::json(
-            &result
-        ))
+    for (key,value) in r.iter() {
+        result.insert(key, value);
+    }
+
+    Ok(warp::reply::json(
+        &result
+    ))
 }
 
 fn delete_json() -> impl Filter<Extract = (Id,), Error = warp::Rejection> + Clone {
@@ -109,7 +109,7 @@ async fn main() {
         .and(delete_json())
         .and(store_filter.clone())
         .and_then(delete_grocery_list_item);
-    
+
     let update_item = warp::put()
         .and(warp::path("v1"))
         .and(warp::path("groceries"))
@@ -118,7 +118,7 @@ async fn main() {
         .and(store_filter.clone())
         .and_then(update_grocery_list);
 
-    
+
     let routes = add_items.or(get_items).or(delete_item).or(update_item);
 
     warp::serve(routes)
