@@ -120,6 +120,6 @@ async fn main() {
     let routes = add_items.or(get_items).or(delete_item).or(update_item);
 
     warp::serve(routes)
-        .run(([127, 0, 0, 1], 3030))
+        .run(([0, 0, 0, 0], 3030))
         .await;
 }
