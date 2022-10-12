@@ -14,6 +14,12 @@ Run
 cargo run
 ```
 
+or
+
+```sh
+curl -sL https://github.com/humbertodias/rust-warp-rest-api/releases/download/v0.1/rust-warp-rest-api_v0.1_x86_64-unknown-linux-musl.tar.gz | tar xz && ./rest-api
+```
+
 POST
 ```sh
 curl --location --request POST 'localhost:3030/v1/groceries' \
@@ -74,3 +80,8 @@ docker images
 REPOSITORY               TAG                                     IMAGE ID       CREATED         SIZE
 rest-api                 latest                                  cdf155a5d3b6   2 minutes ago   13MB
 ```
+
+# Ref
+
+* [rust-wrap](https://github.com/seanmonstar/warp)
+* [rust-gha-release](https://github.com/marketplace/actions/rust-release-binary)
